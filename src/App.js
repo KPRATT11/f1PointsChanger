@@ -1,25 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import TempApiCaller from "./components/tempApiCaller"
+import PointsAdjuster from "./components/PointsAdjuster"
+import DriverDisplayer from "./components/DriverDisplayer"
+import { scoringData } from './dataTemplates/template'
+import { totalPoints } from './helpers/totalPoints'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+const App = () => {
+  const [driverData, setDriverData] = useState('None');
+  const [pointsSystem, setPointsSystem] = useState(scoringData);
+  const [raceDetails, setRaceDetails] = useState('None')
+  const [season, setSeason] = useState('2020');
+
+  function updateScoringData(newPoints){
+    setPointsSystem(newPoints)
+  }
+
+  function getNewDrivers(drivers) {
+    setRaceDetails(drivers.races)
+    const newDriverData = Object.values(drivers.drivers)
+    console.log(newDriverData)
+    setDriverData(newDriverData)
+  }
+
+  function handlePointsCalculation(){
+    console.log(driverData)
+    console.log(raceDetails)
+    let newDriverData = totalPoints(pointsSystem, driverData, raceDetails)
+    setDriverData(newDriverData)
+  }
+
+  return ( 
+    <div style={{
+      'display': 'flex',
+      'justifyContent': 'space-evenly'
+    }}>
+      <div>
+        <TempApiCaller 
+        updateDrivers={getNewDrivers}/>
+        <PointsAdjuster 
+          driverAmount={driverData.length} 
+          scoringData = {pointsSystem} 
+          updateScoringData = {updateScoringData}
+          />
+        <button onClick={() => handlePointsCalculation()}>Calculate Points</button>
+      </div>
+      <div>
+        <DriverDisplayer drivers={driverData}/>
+      </div>
     </div>
-  );
+   );
 }
-
+ 
 export default App;
