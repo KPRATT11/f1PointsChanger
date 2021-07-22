@@ -1,8 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import StandardPointsSheet from './PointsAdjuster/StandardPointsSheet'
 
 const PointsAdjuster = (props) => {
     const [pointsSystem, setPointsSystem] = useState(props.scoringData)
+
+    useEffect(() => {
+        setPointsSystem(props.scoringData)
+    },[props.scoringData])
 
     function updateStandardPoints(points){
         let newPointsSystem = pointsSystem

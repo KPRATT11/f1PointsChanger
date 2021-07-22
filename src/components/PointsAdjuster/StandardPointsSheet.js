@@ -4,6 +4,10 @@ import PointsAdjusterEl from './PointsAdjustmentEl'
 const StandardPointsSheet = (props) => {
     const [curPointsSys, setCurPointsSys] = useState(props.standardPoints)
 
+    useEffect(() => {
+        setCurPointsSys(props.standardPoints)
+    },[props.standardPoints])
+
     const updateCurPointsSys = (key, intendedValue) => {
         let newCurPointsSys = curPointsSys
         newCurPointsSys[key] = intendedValue

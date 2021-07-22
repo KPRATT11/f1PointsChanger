@@ -15,9 +15,7 @@ export const formatRawApiData = (raceData) => {
     for (let outerIndex = 0; outerIndex < formattedTable.races.length; outerIndex++) {
         const element = formattedTable.races[outerIndex];
         for (let index = 0; index < formattedTable.races[outerIndex].length; index++) {
-            console.log(formattedTable.races)
             const element = formattedTable.races[outerIndex][index];
-            console.log(element)
             if(element.Driver.driverId in formattedTable.drivers){
             
             }

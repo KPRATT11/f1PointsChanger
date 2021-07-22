@@ -1,15 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TempApiCaller from "./components/tempApiCaller"
 import PointsAdjuster from "./components/PointsAdjuster"
 import DriverDisplayer from "./components/DriverDisplayer"
 import { scoringData } from './dataTemplates/template'
 import { totalPoints } from './helpers/totalPoints'
+import { getDefaultData } from './helpers/getDefaultData'
 
 const App = () => {
   const [driverData, setDriverData] = useState('None');
   const [pointsSystem, setPointsSystem] = useState(scoringData);
   const [raceDetails, setRaceDetails] = useState('None')
-  const [season, setSeason] = useState('2020');
+  const [season, setSeason] = useState(2020);
+
+  useEffect(() => {
+    const newPointsSystem = getDefaultData(season)
+    console.log(newPointsSystem)
+    updateScoringData(newPointsSystem)
+  },[])
 
   function updateScoringData(newPoints){
     setPointsSystem(newPoints)
@@ -18,15 +25,17 @@ const App = () => {
   function getNewDrivers(drivers) {
     setRaceDetails(drivers.races)
     const newDriverData = Object.values(drivers.drivers)
-    console.log(newDriverData)
     setDriverData(newDriverData)
   }
 
   function handlePointsCalculation(){
-    console.log(driverData)
-    console.log(raceDetails)
     let newDriverData = totalPoints(pointsSystem, driverData, raceDetails)
     setDriverData(newDriverData)
+  }
+
+  function handleSeasonChange(season){
+    let newSeason = parseInt(season)
+    setSeason(newSeason)
   }
 
   return ( 
@@ -36,6 +45,7 @@ const App = () => {
     }}>
       <div>
         <TempApiCaller 
+        handleSeasonChange={handleSeasonChange}
         updateDrivers={getNewDrivers}/>
         <PointsAdjuster 
           driverAmount={driverData.length} 

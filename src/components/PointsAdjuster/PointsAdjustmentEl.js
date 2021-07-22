@@ -1,8 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { positionSuffix } from '../../helpers/positionPrefix'
 
 const PointsAdjusterEl = (props) => {
     const [inputValue, setInputValue] = useState(props.displayPoints)
+
+    useEffect(() => {
+        if(props.displayPoints === undefined){
+            setInputValue('0')
+        }
+        else{
+            setInputValue(props.displayPoints)
+        }
+        
+    },[props.displayPoints]) 
 
     const handleChange = (event) => {
         setInputValue(event.target.value)

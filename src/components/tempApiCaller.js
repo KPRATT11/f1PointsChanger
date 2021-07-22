@@ -6,6 +6,7 @@ const TempApiCaller = (props) => {
 
   function handleChange (event) {
     setInput(event.target.value)
+    props.handleSeasonChange(input)
   }
 
   function handleSubmit() {

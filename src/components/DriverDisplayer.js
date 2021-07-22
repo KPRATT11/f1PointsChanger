@@ -13,7 +13,6 @@ const DriverDisplayer = (props) => {
     if (driverElArray !== "None"){
         driverElArray = sortDriverArray(driverElArray)
         driverElArray = driverElArray.map((element) => {
-            console.log(element)
             return (
                 <DriverDisplayCard
                     name = {element.firstName + element.lastName}
