@@ -3,6 +3,7 @@ import { positionSuffix } from '../../helpers/positionPrefix'
 
 const PointsAdjusterEl = (props) => {
     const [inputValue, setInputValue] = useState(props.displayPoints)
+    const [labelValue, setLabelValue] = useState('NLV')
 
     useEffect(() => {
         if(props.displayPoints === undefined){
@@ -14,18 +15,26 @@ const PointsAdjusterEl = (props) => {
         
     },[props.displayPoints]) 
 
+    useEffect(() => {
+        if (props.position === true){
+            setLabelValue(props.label + positionSuffix(props.label))
+        }
+        else {
+            setLabelValue(props.label)
+        }
+    },[props.position, props.label])
+
     const handleChange = (event) => {
         setInputValue(event.target.value)
     }
 
     const submitChange = () => {
-        console.log(inputValue)
         if (inputValue === ''){
-            setInputValue('0')
-            props.updatePoints(props.id, '0')
+            setInputValue(0)
+            props.updatePoints(props.id, 0)
         }
         else {
-            props.updatePoints(props.id, inputValue)
+            props.updatePoints(props.id, parseInt(inputValue))
         }
         
     }
@@ -35,7 +44,7 @@ const PointsAdjusterEl = (props) => {
             "display": "flex",
             "justifyContent": "space-between"
         }}>
-            <h2>{props.pos + positionSuffix(props.pos)}</h2>
+            <h2>{labelValue}</h2>
             <input type="text" 
             value={inputValue} 
             onChange={(e) => handleChange(e)}

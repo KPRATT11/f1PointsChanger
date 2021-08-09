@@ -1,9 +1,11 @@
+import { createApiReqUrl } from "../apiScripts"
+
 export function totalPoints(pointsSheet, drivers, races){
     drivers = resetAllDriverPoints(drivers)
     let driverMap = mapDriver(drivers) 
     driverMap = calcPoints(driverMap, pointsSheet, races)
     driverMap = Object.values(driverMap)
-    driverMap = totalAllPoints(driverMap)
+    driverMap = totalAllPoints(driverMap, pointsSheet)
     return driverMap
 }
 
@@ -15,12 +17,14 @@ function resetAllDriverPoints(drivers){
     return drivers
 }
 
-function totalAllPoints(drivers){
+function totalAllPoints(drivers, pointsSheet){
     
     for (let index = 0; index < drivers.length; index++) {
-        const driver = drivers[index];
+        let driver = drivers[index];
+        if (pointsSheet.extraRules.dropScores){
+            driver.pointsArray = dropScores(driver, pointsSheet.extraRules.dropScoresData)
+        }
         driver.points += totalDriverPoints(driver)
-        console.log(driver)
     }
     return drivers
 }
@@ -34,6 +38,8 @@ function calcPoints(driverMap, pointsSheet, races){
             let driver = driverMap[driverId]
             driver = addStandardPoints(driver, pointsSheet, race, position)
             driver.points += addFastestLap(finishedDriver, pointsSheet)
+            driver.points += addPolePosition(finishedDriver, pointsSheet)
+            driver.points += addDnf(finishedDriver.positionText, pointsSheet)
             driverMap[driverId] = driver
         }
     }
@@ -43,9 +49,24 @@ function calcPoints(driverMap, pointsSheet, races){
 function addFastestLap(driver, pointsSheet){
     if (driver.FastestLap !== undefined){
         if (parseInt(driver.FastestLap.rank) === 1){
-            return pointsSheet.extraPoints.fastestLap
+            return parseInt(pointsSheet.extraPoints.fastestLap)
         }
         return 0
+    }
+    return 0
+}
+
+function addPolePosition(driver, pointsSheet){
+    if (driver.grid === "1"){
+        return parseInt(pointsSheet.extraPoints.qualyPoints)
+    }
+    return 0
+}
+
+function addDnf(positionText, pointsSheet){
+    if (positionText === "R"){
+        let dnfPoints = parseInt(pointsSheet.extraPoints.dnf)
+        return Math.abs(dnfPoints) * -1
     }
     return 0
 }
@@ -69,7 +90,13 @@ function addStandardPoints(driver, pointsSheet, race, position){
     while(scoreArrayIndex > driver.pointsArray.length){
         newDriver.pointsArray.push([])
     }
-    newDriver.pointsArray[scoreArrayIndex].push(pointsSheet.standardPoints[position])
+    if (position > pointsSheet.standardPoints.length - 1){
+        newDriver.pointsArray[scoreArrayIndex].push(0)
+    }
+    else {
+        newDriver.pointsArray[scoreArrayIndex].push(parseInt(pointsSheet.standardPoints[position]))
+    }
+    
     return driver
 }
 
@@ -95,7 +122,34 @@ function totalDeepArray(array){
     return total
   }
 
-//TODO Add Driver Drop
+function dropScores(driver, dropTable){
+    for (let index = 0; index < driver.pointsArray.length; index++) {
+        let specificRound = driver.pointsArray[index];
+        //sort for int and not alphabetical 
+        let sortedSpecificRounds = specificRound.sort((a ,b) => {
+            return b - a
+        })
+        
+        let amountOfRacesTOBeRemovedFrom
+        if (dropTable[index][1] === 0){
+            amountOfRacesTOBeRemovedFrom = sortedSpecificRounds.length
+        }
+        else{
+            amountOfRacesTOBeRemovedFrom = dropTable[index][1]
+        }
+        let removeAmount = amountOfRacesTOBeRemovedFrom - dropTable[index][0]
+        
+        removeAmount = sortedSpecificRounds.length - (amountOfRacesTOBeRemovedFrom - removeAmount) 
+        console.log(removeAmount)
+        for (let index = 0; index < removeAmount; index++) {
+            let popped = sortedSpecificRounds.pop()
+        }
+        driver.pointsArray[index] = sortedSpecificRounds
+
+        
+    }
+    return driver.pointsArray
+}
 
 function mapDriver(drivers){
     let driverMap = {}
@@ -104,5 +158,7 @@ function mapDriver(drivers){
         driver.pointsArray=[[]]
         driverMap[driver.id] = driver
     }
+    let newMap = {...driverMap}
+    console.log(newMap)
     return driverMap
 }

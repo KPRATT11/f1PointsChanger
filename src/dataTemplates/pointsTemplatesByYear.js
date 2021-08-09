@@ -4,7 +4,7 @@ export const defaultData = [
         standardPoints: [25, 18, 15, 12, 10, 8, 6, 4, 2, 1],
         extraPoints: {
             fastestLap: 1,
-            qualyPoints: [],
+            qualyPoints: 0,
             dnf: 0
         },
         extraRules: {
@@ -16,7 +16,7 @@ export const defaultData = [
         standardPoints: [25, 18, 15, 12, 10, 8, 6, 4, 2, 1],
         extraPoints: {
             fastestLap: 0,
-            qualyPoints: [],
+            qualyPoints: 0,
             dnf: 0
         },
         extraRules: {
@@ -28,7 +28,7 @@ export const defaultData = [
         standardPoints: [10, 8, 6, 5, 4, 3, 2, 1],
         extraPoints: {
             fastestLap: 0,
-            qualyPoints: [],
+            qualyPoints: 0,
             dnf: 0
         },
         extraRules: {
@@ -40,7 +40,7 @@ export const defaultData = [
         standardPoints: [10, 6, 4, 3, 2, 1],
         extraPoints: {
             fastestLap: 0,
-            qualyPoints: [],
+            qualyPoints: 0,
             dnf: 0
         },
         extraRules: {
@@ -52,7 +52,7 @@ export const defaultData = [
         standardPoints: [9, 6, 4, 3, 2, 1],
         extraPoints: {
             fastestLap: 0,
-            qualyPoints: [],
+            qualyPoints: 0,
             dnf: 0
         },
         extraRules: {
@@ -64,7 +64,7 @@ export const defaultData = [
         standardPoints: [8, 6, 4, 3, 2, 1],
         extraPoints: {
             fastestLap: 0,
-            qualyPoints: [],
+            qualyPoints: 0,
             dnf: 0
         },
         extraRules: {
@@ -76,7 +76,7 @@ export const defaultData = [
         standardPoints: [8, 6, 4, 3, 2, 1],
         extraPoints: {
             fastestLap: 1,
-            qualyPoints: [],
+            qualyPoints: 0,
             dnf: 0
         },
         extraRules: {

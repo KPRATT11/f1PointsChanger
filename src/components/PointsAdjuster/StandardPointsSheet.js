@@ -5,6 +5,7 @@ const StandardPointsSheet = (props) => {
     const [curPointsSys, setCurPointsSys] = useState(props.standardPoints)
 
     useEffect(() => {
+        
         setCurPointsSys(props.standardPoints)
     },[props.standardPoints])
 
@@ -12,7 +13,6 @@ const StandardPointsSheet = (props) => {
         let newCurPointsSys = curPointsSys
         newCurPointsSys[key] = intendedValue
         setCurPointsSys(newCurPointsSys)
-        console.log(curPointsSys)
         props.updateStandardPoints(curPointsSys)
     }
 
@@ -23,17 +23,19 @@ const StandardPointsSheet = (props) => {
             pointsElArrayEven.push(<PointsAdjusterEl 
                 key={index} 
                 id={index}
-                pos={String(index + 1)} 
+                label={String(index + 1)} 
                 updatePoints={updateCurPointsSys} 
-                displayPoints={curPointsSys[index]}></PointsAdjusterEl>)
+                displayPoints={curPointsSys[index]}
+                position={true}></PointsAdjusterEl>)
         }
         else{
             pointsElArrayOdd.push(<PointsAdjusterEl 
                 key={index} 
                 id={index}
-                pos={String(index + 1)} 
+                label={String(index + 1)} 
                 updatePoints={updateCurPointsSys} 
-                displayPoints={curPointsSys[index]}></PointsAdjusterEl>)
+                displayPoints={curPointsSys[index]}
+                position={true}></PointsAdjusterEl>)
         }
     }
 
@@ -43,6 +45,8 @@ const StandardPointsSheet = (props) => {
 
     return ( 
         <div style={{
+            height: '100%',
+            overflow: 'scroll',
             "display" : "flex",
             "justifyContent" : "space-around"
         }}>

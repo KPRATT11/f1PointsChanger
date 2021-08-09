@@ -5,18 +5,35 @@ import DriverDisplayer from "./components/DriverDisplayer"
 import { scoringData } from './dataTemplates/template'
 import { totalPoints } from './helpers/totalPoints'
 import { getDefaultData } from './helpers/getDefaultData'
+import { createApiReqUrl, formatRawApiData } from './apiScripts'
+
+//Styling 
+import Container from "./styles/Container.style"
+
 
 const App = () => {
-  const [driverData, setDriverData] = useState('None');
+  const [driverData, setDriverData] = useState([]);
   const [pointsSystem, setPointsSystem] = useState(scoringData);
   const [raceDetails, setRaceDetails] = useState('None')
   const [season, setSeason] = useState(2020);
+  const [totalRaces, setTotalRaces] = useState(0)
+  const [apiLoading, setApiLoading] = useState(true)
 
   useEffect(() => {
     const newPointsSystem = getDefaultData(season)
-    console.log(newPointsSystem)
     updateScoringData(newPointsSystem)
+    callApi()
   },[])
+
+  useEffect(() => {
+    const totalRaces = raceDetails.length
+    setTotalRaces(totalRaces)
+  },[raceDetails])
+
+  function tempUpdateNewPoints(){
+    const newPointsSystem = getDefaultData(season)
+    updateScoringData(newPointsSystem)
+  }
 
   function updateScoringData(newPoints){
     setPointsSystem(newPoints)
@@ -28,9 +45,38 @@ const App = () => {
     setDriverData(newDriverData)
   }
 
+  function updateDropScoresEnabled(bool){
+    let newPointsSystem = {...pointsSystem}
+    newPointsSystem.extraRules.dropScores = bool
+    setPointsSystem(newPointsSystem)
+  }
+
+  function checkDropScoresValidity(){
+    const dropScoresData = pointsSystem.extraRules.dropScoresData
+    let totalUserRaces = 0 
+    for (let index = 0; index < dropScoresData.length; index++) {
+      const element = dropScoresData[index];
+      totalUserRaces += element[1]
+    }
+    console.log(totalUserRaces)
+    if(totalUserRaces === 0){
+      return true
+    }
+    if(totalUserRaces !== totalRaces){
+      return false
+    }
+    return true
+  }
+
   function handlePointsCalculation(){
-    let newDriverData = totalPoints(pointsSystem, driverData, raceDetails)
+    if (checkDropScoresValidity()){
+      let newDriverData = totalPoints(pointsSystem, driverData, raceDetails)
     setDriverData(newDriverData)
+    }
+    else {
+      console.log('Not Working')
+    }
+    
   }
 
   function handleSeasonChange(season){
@@ -38,27 +84,76 @@ const App = () => {
     setSeason(newSeason)
   }
 
-  return ( 
-    <div style={{
-      'display': 'flex',
-      'justifyContent': 'space-evenly'
+  async function callApi(){
+    setApiLoading(true)
+    const response = await fetch(createApiReqUrl(season));
+    const data = await response.json()
+    let formattedData = formatRawApiData(data)
+    getNewDrivers(formattedData)
+    setApiLoading(false)
+  }
+
+  return (
+    <div style = {{
+      display: "flex",
+      justifyContent: 'space-evenly'
     }}>
-      <div>
-        <TempApiCaller 
-        handleSeasonChange={handleSeasonChange}
-        updateDrivers={getNewDrivers}/>
-        <PointsAdjuster 
-          driverAmount={driverData.length} 
-          scoringData = {pointsSystem} 
-          updateScoringData = {updateScoringData}
-          />
-        <button onClick={() => handlePointsCalculation()}>Calculate Points</button>
-      </div>
-      <div>
-        <DriverDisplayer drivers={driverData}/>
-      </div>
+      <Container
+        className = "PointsAdjusterSheet"
+        style = {{
+          width: '777px',
+          height: '800px',
+        }}
+      >
+        <div className = "yearSelector"
+          style={{
+            width: '100px',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            marginTop: '-70px',
+            position: 'inherit',
+            height: '10%',
+          }}
+        >
+          <button onClick = {() => tempUpdateNewPoints()}>Set Points To Year</button>
+            <TempApiCaller 
+              handleSeasonChange={handleSeasonChange}
+              updateDrivers={getNewDrivers}
+              callApi ={callApi}/>
+        </div>
+        <div className = "pointsSheet"
+          style={{
+            height: '80%'
+          }}
+        >
+          <PointsAdjuster 
+              isLoading = {apiLoading}
+              updateDropPointsShowing = {updateDropScoresEnabled}
+              raceAmount={totalRaces}
+              driverAmount={driverData.length} 
+              scoringData = {pointsSystem} 
+              updateScoringData = {updateScoringData}
+              />
+          <button 
+            style={{
+              padding: '10px',
+              marginTop: '5%',
+              marginLeft: '15%'
+            }}
+          onClick={() => handlePointsCalculation()}>Calculate Points</button>
+        </div>
+      </Container>
+      <Container
+        style={{
+          width: '636px'
+        }}
+      >
+        <DriverDisplayer 
+          isLoading={apiLoading}
+          drivers={driverData}/>
+      </Container>
     </div>
-   );
+  )
 }
  
 export default App;
