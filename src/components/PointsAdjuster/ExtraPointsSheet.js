@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import CardStyle from "../../styles/Card.style";
+import Input from "../../styles/Input.style";
 
 const ExtraPointsSheet = (props) => {
   const [extraPoints, setExtraPoints] = useState(props.extraPoints);
@@ -24,7 +25,7 @@ const ExtraPointsSheet = (props) => {
       >
         <div style={{ display: "flex" }}>
           <p>FastestLap</p>
-          <input
+          <Input
             style={inputStyle}
             type="number"
             value={extraPoints.fastestLap}
@@ -37,11 +38,11 @@ const ExtraPointsSheet = (props) => {
               props.updateExtraPoints(newExtraPoints);
               setExtraPoints(newExtraPoints);
             }}
-          ></input>
+          ></Input>
         </div>
         <div style={{ display: "flex" }}>
           <p>Pole Position</p>
-          <input
+          <Input
             style={inputStyle}
             type="number"
             value={extraPoints.qualyPoints}
@@ -53,11 +54,11 @@ const ExtraPointsSheet = (props) => {
               props.updateExtraPoints(newExtraPoints);
               setExtraPoints(newExtraPoints);
             }}
-          ></input>
+          ></Input>
         </div>
         <div style={{ display: "flex" }}>
           <p>DNF</p>
-          <input
+          <Input
             style={inputStyle}
             type="number"
             value={extraPoints.dnf}
@@ -69,7 +70,7 @@ const ExtraPointsSheet = (props) => {
               props.updateExtraPoints(newExtraPoints);
               setExtraPoints(newExtraPoints);
             }}
-          ></input>
+          ></Input>
         </div>
       </CardStyle>
     </div>

@@ -1,20 +1,27 @@
 import styled from "styled-components";
 
 const Input = styled.input`
-    font-family: Roboto, serif;
-    font-weight: 900;
+    -moz-appearance: textfield;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: ${props => {
-        if (props.textSize === "large"){
-            return (30)
+       return props.textSize === "large" ? "40px" : "25px";
+    }};
+    color: ${props => {
+        if (props.color === "blue"){
+            return '#ffffff'
         }
-        else if(props.textSize === "medium"){
-            return (34)
+        else{
+            return '#2A324D'
         }
-    }}px;
+    }};
+    font-weight: bold;
     background-color: #FFF;
     width: 70px;
     padding: 10px;
-    padding-bottom: 0px;
+    padding-bottom: ${props => {
+        return props.textSize === "large" ? "8px" : "0px" 
+    }};
     border: none;
     border-radius: 10px;
     border-bottom: solid #907FF6;
@@ -40,6 +47,7 @@ const Input = styled.input`
         else {
             return ('#FFFFFF')
         }
+    
     }};
 
     &:focus{
@@ -61,6 +69,10 @@ const Input = styled.input`
             }
         }};
     }
+
+    &::-webkit-inner-spin-button{
+        -webkit-appearance: none;
+    };
 `
 
 export default Input

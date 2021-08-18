@@ -1,6 +1,17 @@
 import styled from "styled-components";
 
 const Button = styled.button`
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    color: ${props => {
+        if (props.color === "white"){
+            return '#ffffff'
+        }
+        else{
+            return '#2A324D'
+        }
+    }};
+    font-weight: bold;
     position: absolute;
     transition: 0.2s;
     border-radius: 20px;

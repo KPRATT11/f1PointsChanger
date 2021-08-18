@@ -17,13 +17,20 @@ const TempApiCaller = (props) => {
   return (
     <div
       style={{
-        marginTop: "17px",
+        marginTop: "2%",
+        height: "50%",
+        width: "80%",
+        display: 'flex',
+        justifyContent: 'space-around'
       }}
     >
       <Input
-        color="grey"
+        textSize="large"
+        color="blue"
         style={{
-          width: "200px",
+          marginTop: "-1%",
+          height: "140%",
+          width: "50%",
         }}
         type="number"
         value={input}
@@ -31,7 +38,8 @@ const TempApiCaller = (props) => {
       ></Input>
       <Button
         style={{
-          marginLeft: "40px",
+          marginLeft: "-30%",
+          position: "relative"
         }}
         onClick={() => handleSubmit()}
       >

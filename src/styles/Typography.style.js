@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 
 export const H1 = styled.h1`
-    font-family: Roboto, serif;
+    font-family: Arial, Helvetica, sans-serif;
     color: ${props => {
         if (props.color === "white"){
             return '#ffffff'
@@ -31,7 +31,7 @@ export const H1 = styled.h1`
 `
 
 export const H2 = styled.h2`
-    font-family: Roboto, serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 30px;
     color: ${props => {
         if (props.color === "white"){
@@ -61,7 +61,7 @@ export const H2 = styled.h2`
 `
 
 export const H3 = styled.h3`
-    font-family: Roboto, serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 24px;
     color: ${props => {
         if (props.color === "white"){
@@ -91,7 +91,8 @@ export const H3 = styled.h3`
 `
 
 export const H4 = styled.h4`
-    font-family: Roboto, serif;
+    padding-bottom: 0px;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 20px;
     color: ${props => {
         if (props.color === "white"){

@@ -10,6 +10,7 @@ import { createApiReqUrl, formatRawApiData } from "./apiScripts";
 //Styling
 import Container from "./styles/Container.style";
 import Button from "./styles/Button.style";
+import {H1, H2, H3, H4} from "./styles/Typography.style";
 
 const App = () => {
   const [driverData, setDriverData] = useState([]);
@@ -110,7 +111,7 @@ const App = () => {
           style={{
             display: "flex",
             justifyContent: "space-evenly",
-            width: "100px",
+            width: "100%",
             marginLeft: "auto",
             marginRight: "auto",
             marginTop: "-70px",
@@ -120,14 +121,18 @@ const App = () => {
         >
           <Button
             style={{
-              marginLeft: "-25%",
-              marginTop: "18px",
+              position: "relative",
+              height: "50%",
+              marginTop: "2%",
             }}
             onClick={() => tempUpdateNewPoints()}
           >
-            Set Points To Year
+            Set To Year
           </Button>
           <TempApiCaller
+            style={{
+              height: "2%"
+            }}
             handleSeasonChange={handleSeasonChange}
             updateDrivers={getNewDrivers}
             callApi={callApi}

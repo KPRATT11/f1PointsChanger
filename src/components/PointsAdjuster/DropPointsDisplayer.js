@@ -119,7 +119,17 @@ const DropPointDisplayer = (props) => {
       </div>
     );
   } else {
-    return <div>No drop points</div>;
+    return (
+      <div
+        style={{
+          width: "150%",
+          marginLeft: "-50px",
+          marginTop: "50px",
+        }}
+      >
+        No drop points
+      </div>
+    );
   }
 };
 

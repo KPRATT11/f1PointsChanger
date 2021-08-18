@@ -3,6 +3,7 @@ import StandardPointsSheet from "./PointsAdjuster/StandardPointsSheet";
 import DropPointsDisplayer from "./PointsAdjuster/DropPointsDisplayer";
 import ExtraPointsSheet from "./PointsAdjuster/ExtraPointsSheet";
 import CardStyle from "../styles/Card.style";
+import Button from "../styles/Button.style";
 
 const PointsAdjuster = (props) => {
   const [pointsSystem, setPointsSystem] = useState(props.scoringData);
@@ -87,7 +88,15 @@ const PointsAdjuster = (props) => {
           </div>
 
           <div className="DropScores" style={{ height: "50%" }}>
-            <button onClick={toggleDropPoints}>Enable Drop Points</button>
+            <Button
+              style={{
+                marginLeft: "-22px",
+                marginTop: "-40px",
+              }}
+              onClick={toggleDropPoints}
+            >
+              Enable Drop Points
+            </Button>
 
             <DropPointsDisplayer
               dropPointsEnabled={showDropPoints}
